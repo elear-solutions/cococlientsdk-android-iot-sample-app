@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.getcoco.iotsampleapp.databinding.RecyclerItemResourceBinding;
 
-public class ResourceInfoAdapter extends RecyclerView.Adapter<ResourceInfoAdapter.ResourceItemViewHolder> {
+public class ResourceTileAdapter extends RecyclerView.Adapter<ResourceTileAdapter.ResourceItemViewHolder> {
   @NonNull
   @Override
   public ResourceItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -36,3 +36,4 @@ public class ResourceInfoAdapter extends RecyclerView.Adapter<ResourceInfoAdapte
     }
   }
 }
+

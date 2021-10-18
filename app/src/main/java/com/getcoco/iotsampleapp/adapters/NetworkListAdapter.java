@@ -38,3 +38,4 @@ public class NetworkListAdapter extends RecyclerView.Adapter<NetworkListAdapter.
     }
   }
 }
+

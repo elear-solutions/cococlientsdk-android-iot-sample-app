@@ -1,4 +1,4 @@
-package com.getcoco.iotsampleapp;
+package buzz.getcoco.sample;
 
 import android.content.Context;
 

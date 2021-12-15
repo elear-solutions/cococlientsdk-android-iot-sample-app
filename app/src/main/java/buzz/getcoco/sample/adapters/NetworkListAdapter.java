@@ -1,31 +1,31 @@
-package com.getcoco.iotsampleapp.adapters;
+package buzz.getcoco.sample.adapters;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.getcoco.iotsampleapp.databinding.RecyclerItemNetworkBinding;
+import com.getcoco.sample.databinding.RecyclerItemNetworkBinding;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import buzz.getcoco.api.android.NetworkEx;
+import buzz.getcoco.iot.android.NetworkEx;
 
 public class NetworkListAdapter extends RecyclerView.Adapter<NetworkListAdapter.NetworkViewHolder> {
 
   private final List<NetworkEx> networks = new ArrayList<>();
-
   private final LifecycleOwner lifecycleOwner;
   private final ItemClickListener clickListener;
 
-  public NetworkListAdapter(@NonNull LifecycleOwner lifecycleOwner, @NonNull ItemClickListener clickListener) {
+  public NetworkListAdapter(@NonNull LifecycleOwner lifecycleOwner, @NonNull MutableLiveData<List<NetworkEx>> networksObservable, @NonNull ItemClickListener clickListener) {
     this.lifecycleOwner = lifecycleOwner;
     this.clickListener = clickListener;
+
+    networksObservable.observe(lifecycleOwner, this::setItemList);
   }
 
   @NonNull

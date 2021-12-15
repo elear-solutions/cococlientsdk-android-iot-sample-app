@@ -13,5 +13,5 @@
   <string name="off">OFF</string>
   <string name="num_c">%d C</string>
   <string name="alert">Alert</string>
-    <string name="colon">:</string>
+  <string name="colon">:</string>
 </resources>

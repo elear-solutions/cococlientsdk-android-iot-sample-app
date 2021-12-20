@@ -49,7 +49,13 @@ public class MainActivity extends AppCompatActivity {
     };
 
     network.getZoneListObservable().observe(this, zones -> {
-      for (ZoneEx zone : zones) {
+      List<ZoneEx> copyZones;
+
+      synchronized (zones) {
+        copyZones = new ArrayList<>(zones);
+      }
+
+      for (ZoneEx zone : copyZones) {
         zone.getResourcesObservable().removeObserver(observer);
         zone.getResourcesObservable().observe(MainActivity.this, observer);
       }

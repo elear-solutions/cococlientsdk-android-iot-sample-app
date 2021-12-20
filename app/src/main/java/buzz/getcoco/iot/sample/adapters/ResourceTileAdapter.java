@@ -29,6 +29,7 @@ public class ResourceTileAdapter extends RecyclerView.Adapter<ResourceTileAdapte
 
   @NonNull
   private final LifecycleOwner owner;
+
   private List<ResourceEx> resourceList = new ArrayList<>();
 
   public ResourceTileAdapter(@NonNull MutableLiveData<List<ResourceEx>> resourcesObservable, @NonNull LifecycleOwner owner) {
@@ -64,8 +65,10 @@ public class ResourceTileAdapter extends RecyclerView.Adapter<ResourceTileAdapte
 
   protected static class ResourceItemViewHolder extends RecyclerView.ViewHolder {
     private static final String TAG = "ResourceItemVH";
-    private ResourceEx resource;
+
     private final MutableLiveData<ResourceEx> currentResourceObservable = new MutableLiveData<>();
+
+    private ResourceEx resource;
 
     public ResourceItemViewHolder(@NonNull RecyclerItemResourceBinding binding, @NonNull LifecycleOwner lifecycleOwner) {
       super(binding.getRoot());
@@ -74,7 +77,7 @@ public class ResourceTileAdapter extends RecyclerView.Adapter<ResourceTileAdapte
           .switchMap(currentResourceObservable, ResourceEx::getNameObservable)
           .observe(lifecycleOwner, binding.tvResourceName::setText);
 
-      currentResourceObservable.observe(lifecycleOwner, resourceEx -> rebind(resourceEx, binding, lifecycleOwner));
+      currentResourceObservable.observe(lifecycleOwner, resourceEx -> bind(resourceEx, binding, lifecycleOwner));
 
       binding.btOnOff.setOnCheckedChangeListener((buttonView, isChecked) -> {
         CapabilityOnOff capabilityOnOff = resource.getCapability(Capability.CapabilityId.ON_OFF_CONTROL);
@@ -90,7 +93,7 @@ public class ResourceTileAdapter extends RecyclerView.Adapter<ResourceTileAdapte
 
           Handler handler = new Handler(Looper.getMainLooper());
           if (null != throwable) {
-            handler.post(() -> rebind(resource, binding, lifecycleOwner));
+            handler.post(() -> bind(resource, binding, lifecycleOwner));
             return;
           }
 
@@ -105,7 +108,7 @@ public class ResourceTileAdapter extends RecyclerView.Adapter<ResourceTileAdapte
       binding.ivBell.setOnClickListener(v -> Toast.makeText(binding.getRoot().getContext(), "TODO Notify", Toast.LENGTH_SHORT).show());
     }
 
-    private void rebind(ResourceEx resource, RecyclerItemResourceBinding binding, LifecycleOwner owner) {
+    private void bind(ResourceEx resource, RecyclerItemResourceBinding binding, LifecycleOwner owner) {
       if (isControlResource(resource)) {
         AttributeEx attribute = resource.getAttribute(CapabilityOnOff.AttributeId.ON_FLAG);
 
@@ -119,6 +122,9 @@ public class ResourceTileAdapter extends RecyclerView.Adapter<ResourceTileAdapte
             setControlValues(binding, (Boolean) currentValue);
           }
         });
+      } else {
+        binding.tvPowerDescription.setVisibility(View.GONE);
+        binding.tvPowerValue.setVisibility(View.GONE);
       }
 
       if (isTemperatureResource(resource)) {
@@ -134,6 +140,9 @@ public class ResourceTileAdapter extends RecyclerView.Adapter<ResourceTileAdapte
             setTemperatureValues(binding, (Double) currentValue);
           }
         });
+      } else {
+        binding.tvTempDescription.setVisibility(View.GONE);
+        binding.tvTempValue.setVisibility(View.GONE);
       }
     }
 
@@ -146,13 +155,13 @@ public class ResourceTileAdapter extends RecyclerView.Adapter<ResourceTileAdapte
     }
 
     private static void setTemperatureValues(RecyclerItemResourceBinding binding, Double temperature) {
-      binding.tvDescription.setText(R.string.temperature);
-      binding.tvValue.setText(binding.getRoot().getContext().getString(R.string.num_c, temperature.intValue()));
+      binding.tvTempDescription.setText(R.string.temperature);
+      binding.tvTempValue.setText(binding.getRoot().getContext().getString(R.string.num_c, temperature.intValue()));
     }
 
     private static void setControlValues(RecyclerItemResourceBinding binding, boolean onFlag) {
-      binding.tvDescription.setText(R.string.power_supply);
-      binding.tvValue.setText(onFlag ? R.string.on : R.string.off);
+      binding.tvPowerDescription.setText(R.string.power_supply);
+      binding.tvPowerValue.setText(onFlag ? R.string.on : R.string.off);
       binding.btOnOff.setVisibility(View.VISIBLE);
       binding.btOnOff.setChecked(onFlag);
     }

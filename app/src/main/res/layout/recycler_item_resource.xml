@@ -93,6 +93,7 @@
       android:buttonTint="@color/button_tint_selector"
       android:checked="false"
       android:text="@null"
+      android:visibility="invisible"
       app:layout_constraintEnd_toStartOf="@id/ivBell"
       app:layout_constraintStart_toEndOf="@id/gl50"
       app:layout_constraintTop_toTopOf="@id/dividerLine"
@@ -110,4 +111,3 @@
       app:layout_constraintTop_toTopOf="@id/dividerLine" />
   </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>
-

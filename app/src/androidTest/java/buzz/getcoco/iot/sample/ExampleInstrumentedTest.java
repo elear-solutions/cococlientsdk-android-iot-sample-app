@@ -1,4 +1,4 @@
-package buzz.getcoco.sample;
+package buzz.getcoco.iot.sample;
 
 import android.content.Context;
 

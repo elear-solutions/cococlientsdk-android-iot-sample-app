@@ -1,4 +1,4 @@
-package buzz.getcoco.sample.activities;
+package buzz.getcoco.iot.sample.activities;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -9,16 +9,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
 import android.widget.Toast;
-import com.getcoco.sample.databinding.ActivitySplashBinding;
+import buzz.getcoco.iot.sample.databinding.ActivitySplashBinding;
 import java.io.File;
 import java.util.Objects;
 import buzz.getcoco.auth.Constants;
 import buzz.getcoco.auth.LoginActivity;
 import buzz.getcoco.iot.CocoClient;
-import buzz.getcoco.iot.Network;
 import buzz.getcoco.iot.PlatformInterface;
 import buzz.getcoco.iot.android.CreatorEx;
-import buzz.getcoco.iot.android.NetworkEx;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -48,11 +46,6 @@ public class SplashActivity extends AppCompatActivity {
 
         Log.d(TAG, "illegal state");
       });
-
-  private void startCocoNetActivity() {
-    startActivity(new Intent(this, CocoNetworksActivity.class));
-    finish();
-  }
 
   private final MutableLiveData<Pair<String, String>> authListener = new MutableLiveData<>();
 
@@ -94,12 +87,7 @@ public class SplashActivity extends AppCompatActivity {
     Log.d(TAG, "init: started");
 
     new CocoClient.Configurator()
-        .withCreator(new CreatorEx() { // TODO: make CreatorEx return NetworkEx
-          @Override
-          public Network createNetwork(String id) {
-            return new InternalNetwork(id);
-          }
-        })
+        .withCreator(new CreatorEx())
         .withPlatform(new PlatformInterface() {
           @Override
           public String getCwdPath() {
@@ -125,9 +113,8 @@ public class SplashActivity extends AppCompatActivity {
         }).configure();
   }
 
-  private static class InternalNetwork extends NetworkEx {
-    protected InternalNetwork(String id) {
-      super(id);
-    }
+  private void startCocoNetActivity() {
+    startActivity(new Intent(this, CocoNetworksActivity.class));
+    finish();
   }
 }

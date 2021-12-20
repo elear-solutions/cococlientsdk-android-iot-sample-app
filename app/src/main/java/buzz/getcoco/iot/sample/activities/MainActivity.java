@@ -1,4 +1,4 @@
-package buzz.getcoco.sample.activities;
+package buzz.getcoco.iot.sample.activities;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -9,9 +9,9 @@ import androidx.lifecycle.Observer;
 import buzz.getcoco.iot.android.NetworkEx;
 import buzz.getcoco.iot.android.ResourceEx;
 import buzz.getcoco.iot.android.ZoneEx;
-import buzz.getcoco.sample.Globals;
-import buzz.getcoco.sample.adapters.ResourceTileAdapter;
-import com.getcoco.sample.databinding.ActivityMainBinding;
+import buzz.getcoco.iot.sample.Globals;
+import buzz.getcoco.iot.sample.adapters.ResourceTileAdapter;
+import buzz.getcoco.iot.sample.databinding.ActivityMainBinding;
 import java.util.ArrayList;
 import java.util.List;
 import buzz.getcoco.iot.android.Identifier;
@@ -19,7 +19,6 @@ import buzz.getcoco.iot.android.Identifier;
 public class MainActivity extends AppCompatActivity {
 
   private static final String TAG = "MainActivity";
-  ResourceTileAdapter tileAdapter;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     });
 
     Log.d(TAG, "onCreate: resourceList" + resourceList);
-    tileAdapter = new ResourceTileAdapter(resourcesObservable, this);
+    ResourceTileAdapter tileAdapter = new ResourceTileAdapter(resourcesObservable, this);
 
     binding.rvResources.setAdapter(tileAdapter);
   }

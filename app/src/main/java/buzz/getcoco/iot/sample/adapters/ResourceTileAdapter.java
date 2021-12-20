@@ -1,4 +1,4 @@
-package buzz.getcoco.sample.adapters;
+package buzz.getcoco.iot.sample.adapters;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -18,8 +18,8 @@ import buzz.getcoco.iot.CapabilityTemperatureSensing;
 import buzz.getcoco.iot.Command;
 import buzz.getcoco.iot.android.AttributeEx;
 import buzz.getcoco.iot.android.ResourceEx;
-import com.getcoco.sample.R;
-import com.getcoco.sample.databinding.RecyclerItemResourceBinding;
+import buzz.getcoco.iot.sample.R;
+import buzz.getcoco.iot.sample.databinding.RecyclerItemResourceBinding;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,55 +74,7 @@ public class ResourceTileAdapter extends RecyclerView.Adapter<ResourceTileAdapte
           .switchMap(currentResourceObservable, ResourceEx::getNameObservable)
           .observe(lifecycleOwner, binding.tvResourceName::setText);
 
-      /**
-      // for temp attr
-      Transformations
-          .switchMap(currentResourceObservable, resource -> {
-            AttributeEx tempAttr = resource.getAttribute(CapabilityTemperatureSensing.AttributeId.CURRENT_TEMP_CELSIUS);
-
-            if (null != tempAttr)
-              return tempAttr.getCurrentValueObservable();
-            else
-              return new MutableLiveData<>(null);
-          })
-          .observe(lifecycleOwner, currentValue -> {
-
-            if (currentValue instanceof Integer) {
-              int temperature = (int) currentValue;
-              binding.tvValue.setText(binding.getRoot().getContext().getString(R.string.num_c, temperature));
-              binding.tvDescription.setText(R.string.temperature);
-            }
-
-            binding.btOnOff.setVisibility(View.INVISIBLE);
-          });
-
-      //for on flag attr
-      Transformations
-          .switchMap(currentResourceObservable, resource -> {
-            AttributeEx attribute = resource.getAttribute(CapabilityOnOff.AttributeId.ON_FLAG);
-
-            if (null != attribute)
-              return attribute.getCurrentValueObservable();
-            else
-              return new MutableLiveData<>(null);
-          })
-          .observe(lifecycleOwner, currentValue -> {
-            int visibility = View.INVISIBLE;
-            if (currentValue instanceof Boolean) {
-              boolean onFlag = (boolean) currentValue;
-              visibility = View.VISIBLE;
-              binding.tvDescription.setText(R.string.power_supply);
-              binding.tvValue.setText(onFlag ? R.string.on : R.string.off);
-              binding.btOnOff.setChecked(onFlag);
-            }
-
-            binding.btOnOff.setVisibility(visibility);
-      });
-       */
-
-      currentResourceObservable.observe(lifecycleOwner, resourceEx -> {
-        rebind(resourceEx, binding, lifecycleOwner);
-      });
+      currentResourceObservable.observe(lifecycleOwner, resourceEx -> rebind(resourceEx, binding, lifecycleOwner));
 
       binding.btOnOff.setOnCheckedChangeListener((buttonView, isChecked) -> {
         CapabilityOnOff capabilityOnOff = resource.getCapability(Capability.CapabilityId.ON_OFF_CONTROL);
@@ -134,13 +86,11 @@ public class ResourceTileAdapter extends RecyclerView.Adapter<ResourceTileAdapte
         Command<CapabilityOnOff.CommandId> command = isChecked ? new CapabilityOnOff.On() : new CapabilityOnOff.Off();
 
         capabilityOnOff.sendResourceCommand(command, (commandResponse, throwable) -> {
-          Log.d(TAG, "ResourceItemViewHolder: response: "
-              + commandResponse + ", throwable: "
-              + throwable);
+          Log.d(TAG, "response: " + commandResponse + ", throwable: " + throwable);
 
           Handler handler = new Handler(Looper.getMainLooper());
           if (null != throwable) {
-            handler.post(() -> binding.btOnOff.setChecked(!isChecked));
+            handler.post(() -> rebind(resource, binding, lifecycleOwner));
             return;
           }
 
@@ -152,14 +102,18 @@ public class ResourceTileAdapter extends RecyclerView.Adapter<ResourceTileAdapte
         });
       });
 
-      binding.ivBell.setOnClickListener(v -> {
-        Toast.makeText(binding.getRoot().getContext(), "TODO Notify", Toast.LENGTH_SHORT).show();
-      });
+      binding.ivBell.setOnClickListener(v -> Toast.makeText(binding.getRoot().getContext(), "TODO Notify", Toast.LENGTH_SHORT).show());
     }
 
     private void rebind(ResourceEx resource, RecyclerItemResourceBinding binding, LifecycleOwner owner) {
       if (isControlResource(resource)) {
         AttributeEx attribute = resource.getAttribute(CapabilityOnOff.AttributeId.ON_FLAG);
+
+        if (null == attribute) {
+          Log.d(TAG, "rebind: no on flag attribute");
+          return;
+        }
+
         attribute.getCurrentValueObservable().observe(owner, currentValue -> {
           if (currentValue instanceof Boolean) {
             setControlValues(binding, (Boolean) currentValue);
@@ -169,6 +123,12 @@ public class ResourceTileAdapter extends RecyclerView.Adapter<ResourceTileAdapte
 
       if (isTemperatureResource(resource)) {
         AttributeEx attribute = resource.getAttribute(CapabilityTemperatureSensing.AttributeId.CURRENT_TEMP_CELSIUS);
+
+        if (null == attribute) {
+          Log.d(TAG, "rebind: no current temperature attribute");
+          return;
+        }
+
         attribute.getCurrentValueObservable().observe(owner, currentValue -> {
           if (currentValue instanceof Double) {
             setTemperatureValues(binding, (Double) currentValue);
@@ -176,30 +136,25 @@ public class ResourceTileAdapter extends RecyclerView.Adapter<ResourceTileAdapte
         });
       }
     }
-  }
 
-  private static boolean isControlResource(ResourceEx resource) {
-    return null != resource.getCapability(Capability.CapabilityId.ON_OFF_CONTROL);
-  }
+    private static boolean isControlResource(ResourceEx resource) {
+      return null != resource.getCapability(Capability.CapabilityId.ON_OFF_CONTROL);
+    }
 
-  private static boolean isTemperatureResource(ResourceEx resource) {
-    return null != resource.getCapability(Capability.CapabilityId.TEMPERATURE_MEASUREMENT);
-  }
+    private static boolean isTemperatureResource(ResourceEx resource) {
+      return null != resource.getCapability(Capability.CapabilityId.TEMPERATURE_MEASUREMENT);
+    }
 
-  private static void setTemperatureValues(RecyclerItemResourceBinding binding, Double temperature) {
-    binding.tvDescription.setText(R.string.temperature);
-    binding.tvValue.setText(binding.getRoot().getContext().getString(R.string.num_c, temperature.intValue()));
-    binding.btOnOff.setVisibility(View.INVISIBLE);
-  }
+    private static void setTemperatureValues(RecyclerItemResourceBinding binding, Double temperature) {
+      binding.tvDescription.setText(R.string.temperature);
+      binding.tvValue.setText(binding.getRoot().getContext().getString(R.string.num_c, temperature.intValue()));
+    }
 
-  private static void setControlValues(RecyclerItemResourceBinding binding, boolean onFlag) {
-    binding.tvDescription.setText(R.string.power_supply);
-    binding.tvValue.setText(onFlag ? R.string.on : R.string.off);
-    binding.btOnOff.setVisibility(View.VISIBLE);
-    binding.btOnOff.setChecked(onFlag);
-  }
-
-  private static boolean isBoth(ResourceEx resource) {
-    return isControlResource(resource) && isTemperatureResource(resource);
+    private static void setControlValues(RecyclerItemResourceBinding binding, boolean onFlag) {
+      binding.tvDescription.setText(R.string.power_supply);
+      binding.tvValue.setText(onFlag ? R.string.on : R.string.off);
+      binding.btOnOff.setVisibility(View.VISIBLE);
+      binding.btOnOff.setChecked(onFlag);
+    }
   }
 }

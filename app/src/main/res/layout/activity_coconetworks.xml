@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="buzz.getcoco.sample.activities.CocoNetworksActivity">
+    tools:context="buzz.getcoco.iot.sample.activities.CocoNetworksActivity">
 
     <TextView
         android:id="@+id/tvHeading"

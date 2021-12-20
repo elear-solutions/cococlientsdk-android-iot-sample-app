@@ -10,7 +10,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.getcoco.iotsampleapp"
+        applicationId "buzz.getcoco.iot.sample"
         minSdk 21
         targetSdk 30
         versionCode 1
@@ -43,7 +43,7 @@ dependencies {
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
 
     // IoT SDK android for COCO
-    implementation 'buzz.getcoco:cococlientsdk-android:0.7.1-staging'
+    implementation 'buzz.getcoco:cococlientsdk-android:0.7.2-staging'
     implementation 'buzz.getcoco:cococlientsdk-java:0.20.0-lite-staging'
 
     // login with COCO

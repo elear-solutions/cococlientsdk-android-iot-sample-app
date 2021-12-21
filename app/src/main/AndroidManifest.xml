@@ -12,7 +12,7 @@
 
     <meta-data
       android:name="buzz.getcoco.auth.client_id"
-      android:value="dc556e0901c164b7bf43" />
+      android:value="your_client_id_here" />
 
     <activity
       android:name="buzz.getcoco.iot.sample.activities.SplashActivity"
@@ -41,7 +41,7 @@
         <action android:name="android.intent.action.VIEW"/>
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
-        <data android:scheme="cocodc556e0901c164b7bf43"/>
+        <data android:scheme="your_redirect_uri_here"/>
       </intent-filter>
     </activity>
   </application>

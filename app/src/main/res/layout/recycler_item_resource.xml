@@ -38,49 +38,68 @@
       app:layout_constraintTop_toBottomOf="@id/tvResourceName" />
 
     <TextView
-      android:id="@+id/tvDescription"
+      android:id="@+id/tvPowerDescription"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="10dp"
+      android:layout_marginTop="5dp"
+      android:fontFamily="@font/quicksand_semi_bold"
+      tools:text="@string/power_supply"
+      android:textSize="15sp"
+      app:layout_constraintTop_toTopOf="@id/dividerLine"
+      app:layout_constraintBottom_toTopOf="@id/tvTempDescription"
+      app:layout_constraintStart_toStartOf="parent"
+      />
+
+    <TextView
+      android:id="@+id/tvTempDescription"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginStart="10dp"
       android:layout_marginTop="5dp"
+      android:layout_marginBottom="5dp"
       android:fontFamily="@font/quicksand_semi_bold"
       tools:text="@string/temperature"
       android:textSize="15sp"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="@id/dividerLine" />
+      app:layout_constraintTop_toBottomOf="@id/tvPowerDescription" />
 
     <androidx.constraintlayout.widget.Guideline
-      android:id="@+id/gl50"
+      android:id="@+id/glV50"
       android:layout_width="wrap_content"
       android:layout_height="match_parent"
       android:orientation="vertical"
       app:layout_constraintGuide_percent="0.5" />
 
-    <TextView
-      android:id="@+id/tvColon"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:padding="2dp"
-      android:text="@string/colon"
-      android:textSize="15sp"
-      app:layout_constraintStart_toEndOf="@id/tvDescription"
-      app:layout_constraintTop_toTopOf="@id/tvDescription" />
-
-    <TextView
-      android:id="@+id/tvValue"
+     <TextView
+      android:id="@+id/tvPowerValue"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:layout_marginStart="10dp"
+      android:layout_marginEnd="10dp"
       android:layout_marginTop="5dp"
       android:fontFamily="@font/quicksand_semi_bold"
       android:textColor="@color/color19C676"
       android:textSize="15sp"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toStartOf="@id/gl50"
-      app:layout_constraintStart_toEndOf="@id/tvColon"
       app:layout_constraintTop_toTopOf="@id/dividerLine"
-      app:layout_goneMarginStart="10dp"
+      app:layout_constraintEnd_toStartOf="@id/glV50"
+      app:layout_constraintBottom_toTopOf="@id/tvTempValue"
+      tools:text="@string/off"
+      />
+
+    <TextView
+      android:id="@+id/tvTempValue"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="10dp"
+      android:layout_marginTop="5dp"
+      android:layout_marginBottom="5dp"
+      android:fontFamily="@font/quicksand_semi_bold"
+      android:textColor="@color/color19C676"
+      android:textSize="15sp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/glV50"
+      app:layout_constraintTop_toBottomOf="@id/tvPowerValue"
       tools:text="35 C" />
 
     <com.google.android.material.checkbox.MaterialCheckBox
@@ -95,14 +114,14 @@
       android:text="@null"
       android:visibility="invisible"
       app:layout_constraintEnd_toStartOf="@id/ivBell"
-      app:layout_constraintStart_toEndOf="@id/gl50"
+      app:layout_constraintStart_toEndOf="@id/glV50"
       app:layout_constraintTop_toTopOf="@id/dividerLine"
       app:layout_constraintBottom_toBottomOf="parent"/>
 
     <ImageView
       android:id="@+id/ivBell"
-      android:layout_width="40dp"
-      android:layout_height="40dp"
+      android:layout_width="30dp"
+      android:layout_height="30dp"
       android:layout_marginEnd="10dp"
       android:contentDescription="@string/alert"
       android:src="@drawable/ic_alert"

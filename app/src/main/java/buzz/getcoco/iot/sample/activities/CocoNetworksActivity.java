@@ -34,10 +34,9 @@ public class CocoNetworksActivity extends AppCompatActivity {
     NetworkListAdapter adapter = new NetworkListAdapter(this, network -> {
         network.connect();
 
-        startActivity(
-                new Intent(CocoNetworksActivity.this, MainActivity.class)
-                        .setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                        .putExtra(Globals.IDENTIFIER, Identifier.getIdentifier(network)));
+        startActivity(new Intent(CocoNetworksActivity.this, MainActivity.class)
+            .setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            .putExtra(Globals.IDENTIFIER, Identifier.getIdentifier(network)));
 
         finish();
     });

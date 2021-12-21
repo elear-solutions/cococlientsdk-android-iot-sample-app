@@ -88,11 +88,11 @@ public class ResourceTileAdapter extends RecyclerView.Adapter<ResourceTileAdapte
 
         Command<CapabilityOnOff.CommandId> command = isChecked ? new CapabilityOnOff.On() : new CapabilityOnOff.Off();
 
-        capabilityOnOff.sendResourceCommand(command, (commandResponse, throwable) -> {
-          Log.d(TAG, "response: " + commandResponse + ", throwable: " + throwable);
+        capabilityOnOff.sendResourceCommand(command, (commandResponse, tr) -> {
+          Log.d(TAG, "ResourceItemViewHolder: response: " + commandResponse, tr);
 
           Handler handler = new Handler(Looper.getMainLooper());
-          if (null != throwable) {
+          if (null != tr) {
             handler.post(() -> bind(resource, binding, lifecycleOwner));
             return;
           }

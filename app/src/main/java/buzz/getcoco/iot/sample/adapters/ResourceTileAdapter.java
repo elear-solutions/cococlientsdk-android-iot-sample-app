@@ -79,14 +79,14 @@ public class ResourceTileAdapter extends RecyclerView.Adapter<ResourceTileAdapte
 
       currentResourceObservable.observe(lifecycleOwner, resourceEx -> bind(resourceEx, binding, lifecycleOwner));
 
-      binding.btOnOff.setOnCheckedChangeListener((buttonView, isChecked) -> {
+      binding.btOnOff.setOnClickListener(v -> {
         CapabilityOnOff capabilityOnOff = resource.getCapability(Capability.CapabilityId.ON_OFF_CONTROL);
 
         if (null == capabilityOnOff) {
           return;
         }
 
-        Command<CapabilityOnOff.CommandId> command = isChecked ? new CapabilityOnOff.On() : new CapabilityOnOff.Off();
+        Command<CapabilityOnOff.CommandId> command = binding.btOnOff.isChecked() ? new CapabilityOnOff.On() : new CapabilityOnOff.Off();
 
         capabilityOnOff.sendResourceCommand(command, (commandResponse, tr) -> {
           Log.d(TAG, "ResourceItemViewHolder: response: " + commandResponse, tr);

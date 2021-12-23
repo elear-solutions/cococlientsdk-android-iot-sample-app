@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   android:id="@+id/llBottomNav"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
@@ -10,5 +11,7 @@
     android:id="@+id/rvResources"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="15dp"
+    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
     tools:listitem="@layout/recycler_item_resource" />
 </RelativeLayout>

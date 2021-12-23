@@ -4,11 +4,13 @@
   <string name="select_networks_to_connect">Select Networks To Connect</string>
   <string name="connect">CONNECT</string>
   <string name="network">Network</string>
-  <string name="A_network_to_be_connected">A Network to be Connected</string>
   <string name="resource_name">Resource Name</string>
   <string name="temperature">Temperature</string>
   <string name="power_supply">Power Supply</string>
   <string name="temperature_value">Temperature Value</string>
   <string name="on_off_status">On Off Status</string>
+  <string name="on">ON</string>
+  <string name="off">OFF</string>
+  <string name="num_c">%d C</string>
   <string name="alert">Alert</string>
 </resources>

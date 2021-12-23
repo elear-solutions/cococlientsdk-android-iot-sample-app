@@ -7,14 +7,16 @@
         <entry key="app/src/main/res/drawable/ic_baseline_dashboard_24.xml" value="0.19635416666666666" />
         <entry key="app/src/main/res/drawable/ic_coco_app_icon.xml" value="0.19635416666666666" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.19635416666666666" />
+        <entry key="app/src/main/res/drawable/ic_power.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_signal_bars_icon.xml" value="0.19635416666666666" />
         <entry key="app/src/main/res/drawable/ic_twotone_alarm_24.xml" value="0.19635416666666666" />
         <entry key="app/src/main/res/font/quicksand_semi_bold.xml" value="0.14814814814814814" />
         <entry key="app/src/main/res/layout/activity_coconetworks.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.21" />
+        <entry key="app/src/main/res/layout/activity_splash.xml" value="0.16510416666666666" />
         <entry key="app/src/main/res/layout/dashboard_item.xml" value="0.18020833333333333" />
         <entry key="app/src/main/res/layout/network_item.xml" value="0.33" />
-        <entry key="app/src/main/res/layout/recycler_item_network.xml" value="0.16770833333333332" />
+        <entry key="app/src/main/res/layout/recycler_item_network.xml" value="0.33" />
         <entry key="app/src/main/res/layout/recycler_item_resource.xml" value="0.39078498293515357" />
         <entry key="app/src/main/res/layout/resource_item.xml" value="0.18020833333333333" />
         <entry key="app/src/main/res/menu/bottom_nav.xml" value="0.1" />

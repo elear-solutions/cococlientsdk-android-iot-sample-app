@@ -1,4 +1,4 @@
-package com.getcoco.iotsampleapp;
+package buzz.getcoco.iot.sample;
 
 import org.junit.Test;
 

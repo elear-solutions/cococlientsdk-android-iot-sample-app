@@ -1,25 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  android:id="@+id/rlParent"
-  android:layout_width="match_parent"
-  android:layout_height="wrap_content"
+<com.google.android.material.card.MaterialCardView
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
-  android:orientation="horizontal"
-  android:padding="15dp"
-  android:layout_marginTop="5dp"  >
+  android:id="@+id/mcRoot"
+  android:layout_height="wrap_content"
+  android:layout_width="match_parent"
+  android:layout_margin="5dp"
+  app:cardCornerRadius="5dp"
+  app:cardElevation="5dp"
+  app:strokeColor="@color/colorgreylight"
+  app:strokeWidth="1dp">
 
-  <TextView
-    android:id="@+id/tvNetworkName"
+  <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_alignParentEnd="true"
-    android:layout_marginStart="10dp"
-    android:layout_marginTop="2dp"
-    android:layout_marginEnd="10dp"
-    android:layout_marginBottom="6dp"
-    android:fontFamily="@font/quicksand_regular"
-    android:gravity="center_vertical"
-    android:textSize="15sp"
-    tools:text="@string/A_network_to_be_connected" />
+    android:layout_height="wrap_content">
 
-</RelativeLayout>
+    <TextView
+      android:id="@+id/tvNetworkName"
+      android:layout_height="wrap_content"
+      android:layout_width="0dp"
+      android:layout_marginStart="10dp"
+      android:layout_marginEnd="10dp"
+      android:layout_marginTop="2dp"
+      android:layout_marginBottom="6dp"
+      android:padding="10dp"
+      android:textSize="15sp"
+      android:fontFamily="@font/quicksand_regular"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/btnConnect"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintBottom_toBottomOf="parent"
+      tools:text="Network 1" />
+
+    <Button
+      android:id="@+id/btnConnect"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      android:text="@string/connect"
+      style="@style/Widget.MaterialComponents.Button.TextButton"/>
+  </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

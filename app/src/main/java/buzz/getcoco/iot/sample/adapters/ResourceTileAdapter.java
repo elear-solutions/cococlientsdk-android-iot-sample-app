@@ -109,36 +109,40 @@ public class ResourceTileAdapter extends RecyclerView.Adapter<ResourceTileAdapte
     }
 
     private void bind(ResourceEx resource, RecyclerItemResourceBinding binding, LifecycleOwner owner) {
-      if (isControlResource(resource)) {
-        AttributeEx attribute = resource.getAttribute(CapabilityOnOff.AttributeId.ON_FLAG);
+      AttributeEx temperatureAttr, onOffAttr;
 
-        if (null == attribute) {
-          Log.d(TAG, "rebind: no on flag attribute");
-          return;
-        }
+      if (isControlResource(resource) &&
+              null != (onOffAttr = resource.getAttribute(CapabilityOnOff.AttributeId.ON_FLAG))) {
 
-        attribute.getCurrentValueObservable().observe(owner, currentValue -> {
+        onOffAttr.getCurrentValueObservable().observe(owner, currentValue -> {
           if (currentValue instanceof Boolean) {
             setControlValues(binding, (Boolean) currentValue);
           }
+
+          int visibility = currentValue instanceof Boolean ? View.VISIBLE : View.GONE;
+
+          binding.tvPowerDescription.setVisibility(visibility);
+          binding.tvPowerValue.setVisibility(visibility);
+          binding.btOnOff.setVisibility(visibility);
         });
       } else {
         binding.tvPowerDescription.setVisibility(View.GONE);
         binding.tvPowerValue.setVisibility(View.GONE);
+        binding.btOnOff.setVisibility(View.GONE);
       }
 
-      if (isTemperatureResource(resource)) {
-        AttributeEx attribute = resource.getAttribute(CapabilityTemperatureSensing.AttributeId.CURRENT_TEMP_CELSIUS);
+      if (isTemperatureResource(resource)
+              && (null != (temperatureAttr = resource.getAttribute(CapabilityTemperatureSensing.AttributeId.CURRENT_TEMP_CELSIUS)))) {
 
-        if (null == attribute) {
-          Log.d(TAG, "rebind: no current temperature attribute");
-          return;
-        }
-
-        attribute.getCurrentValueObservable().observe(owner, currentValue -> {
+        temperatureAttr.getCurrentValueObservable().observe(owner, currentValue -> {
           if (currentValue instanceof Double) {
             setTemperatureValues(binding, (Double) currentValue);
           }
+
+          int visibility = currentValue instanceof Double ? View.VISIBLE : View.GONE;
+
+          binding.tvTempDescription.setVisibility(visibility);
+          binding.tvTempValue.setVisibility(visibility);
         });
       } else {
         binding.tvTempDescription.setVisibility(View.GONE);
@@ -162,7 +166,6 @@ public class ResourceTileAdapter extends RecyclerView.Adapter<ResourceTileAdapte
     private static void setControlValues(RecyclerItemResourceBinding binding, boolean onFlag) {
       binding.tvPowerDescription.setText(R.string.power_supply);
       binding.tvPowerValue.setText(onFlag ? R.string.on : R.string.off);
-      binding.btOnOff.setVisibility(View.VISIBLE);
       binding.btOnOff.setChecked(onFlag);
     }
   }

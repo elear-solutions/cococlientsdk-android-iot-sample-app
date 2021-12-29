@@ -170,7 +170,6 @@ public class ResourceTileAdapter extends RecyclerView.Adapter<ResourceTileAdapte
     private static void setControlValues(RecyclerItemResourceBinding binding, boolean onFlag) {
       binding.tvPowerDescription.setText(R.string.power_supply);
       binding.tvPowerValue.setText(onFlag ? R.string.on : R.string.off);
-      binding.btOnOff.setVisibility(View.VISIBLE);
       binding.btOnOff.setChecked(onFlag);
     }
   }

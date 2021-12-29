@@ -122,9 +122,14 @@ public class ResourceTileAdapter extends RecyclerView.Adapter<ResourceTileAdapte
             setControlValues(binding, (Boolean) currentValue);
           }
         });
+
+        binding.tvPowerDescription.setVisibility(View.VISIBLE);
+        binding.tvPowerValue.setVisibility(View.VISIBLE);
+        binding.btOnOff.setVisibility(View.VISIBLE);
       } else {
         binding.tvPowerDescription.setVisibility(View.GONE);
         binding.tvPowerValue.setVisibility(View.GONE);
+        binding.btOnOff.setVisibility(View.GONE);
       }
 
       if (isTemperatureResource(resource)) {
@@ -139,6 +144,9 @@ public class ResourceTileAdapter extends RecyclerView.Adapter<ResourceTileAdapte
           if (currentValue instanceof Double) {
             setTemperatureValues(binding, (Double) currentValue);
           }
+
+          binding.tvTempDescription.setVisibility(View.VISIBLE);
+          binding.tvTempValue.setVisibility(View.VISIBLE);
         });
       } else {
         binding.tvTempDescription.setVisibility(View.GONE);

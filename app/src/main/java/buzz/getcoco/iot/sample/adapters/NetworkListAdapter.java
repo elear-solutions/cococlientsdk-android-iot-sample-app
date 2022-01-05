@@ -1,25 +1,23 @@
 package buzz.getcoco.iot.sample.adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
 import androidx.recyclerview.widget.RecyclerView;
+import buzz.getcoco.iot.Network;
 import buzz.getcoco.iot.sample.databinding.RecyclerItemNetworkBinding;
 import java.util.ArrayList;
 import java.util.List;
-import buzz.getcoco.iot.android.NetworkEx;
 
 public class NetworkListAdapter extends RecyclerView.Adapter<NetworkListAdapter.NetworkViewHolder> {
 
-  private final List<NetworkEx> networks = new ArrayList<>();
-  private final LifecycleOwner lifecycleOwner;
+  private static final String TAG = "NetworkListAdapter";
+
+  private final List<Network> networks = new ArrayList<>();
   private final ItemClickListener clickListener;
 
-  public NetworkListAdapter(@NonNull LifecycleOwner lifecycleOwner, @NonNull ItemClickListener clickListener) {
-    this.lifecycleOwner = lifecycleOwner;
+  public NetworkListAdapter(@NonNull ItemClickListener clickListener) {
     this.clickListener = clickListener;
   }
 
@@ -28,12 +26,16 @@ public class NetworkListAdapter extends RecyclerView.Adapter<NetworkListAdapter.
   public NetworkViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
     RecyclerItemNetworkBinding binding = RecyclerItemNetworkBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
 
-    return new NetworkViewHolder(binding, lifecycleOwner, clickListener);
+    return new NetworkViewHolder(binding);
   }
 
   @Override
   public void onBindViewHolder(@NonNull NetworkViewHolder holder, int position) {
-    holder.currentNetworkObservable.postValue(holder.currentNetwork = networks.get(position));
+    Network network = networks.get(position);
+    Log.d(TAG, "onBindViewHolder: Network: " + network);
+
+    holder.binding.tvNetworkName.setText(network.getName());
+    holder.binding.btnConnect.setOnClickListener(v -> clickListener.onConnectClicked(network));
   }
 
   @Override
@@ -41,7 +43,7 @@ public class NetworkListAdapter extends RecyclerView.Adapter<NetworkListAdapter.
     return networks.size();
   }
 
-  public void setItemList(@NonNull List<NetworkEx> networks) {
+  public void setItemList(@NonNull List<Network> networks) {
     this.networks.clear();
     this.networks.addAll(networks);
 
@@ -49,25 +51,16 @@ public class NetworkListAdapter extends RecyclerView.Adapter<NetworkListAdapter.
   }
 
   protected static class NetworkViewHolder extends RecyclerView.ViewHolder {
-    private NetworkEx currentNetwork;
-    private final MutableLiveData<NetworkEx> currentNetworkObservable = new MutableLiveData<>();
+    private final RecyclerItemNetworkBinding binding;
 
-    public NetworkViewHolder(@NonNull RecyclerItemNetworkBinding binding,
-                             @NonNull LifecycleOwner lifecycleOwner, @NonNull ItemClickListener clickListener) {
+    public NetworkViewHolder(@NonNull RecyclerItemNetworkBinding binding) {
       super(binding.getRoot());
 
-      Transformations
-              .switchMap(currentNetworkObservable, network -> network.getNetworkNameObservable())
-              .observe(lifecycleOwner, binding.tvNetworkName::setText);
-
-      binding.btnConnect.setOnClickListener(v -> {
-        clickListener.onConnectClicked(currentNetwork);
-      });
+      this.binding = binding;
     }
   }
 
   public interface ItemClickListener {
-   void onConnectClicked(@NonNull NetworkEx network);
+   void onConnectClicked(@NonNull Network network);
   }
 }
-

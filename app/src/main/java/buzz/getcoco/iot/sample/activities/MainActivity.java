@@ -9,7 +9,7 @@ import androidx.lifecycle.Observer;
 import buzz.getcoco.iot.android.NetworkEx;
 import buzz.getcoco.iot.android.ResourceEx;
 import buzz.getcoco.iot.android.ZoneEx;
-import buzz.getcoco.iot.sample.Globals;
+import buzz.getcoco.iot.sample.utilities.Globals;
 import buzz.getcoco.iot.sample.adapters.ResourceTileAdapter;
 import buzz.getcoco.iot.sample.databinding.ActivityMainBinding;
 import java.util.ArrayList;
@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
       String message = "Name: " + network.getName() + ", state: " + state;
 
       Log.d(TAG, "onCreate: " + message);
-      MainActivity.this.runOnUiThread(() -> Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show());
+      Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
     });
 
     // observer that adds resources from all zones to one list
@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
       resourcesObservable.postValue(resourceList);
     };
 
+    // Adds all the resources from all zones
     network.getZoneListObservable().observe(this, zones -> {
       for (ZoneEx zone : zones) {
         zone.getResourcesObservable().removeObserver(observer);

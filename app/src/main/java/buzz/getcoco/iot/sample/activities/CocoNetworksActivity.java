@@ -7,13 +7,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import buzz.getcoco.iot.Network;
-import buzz.getcoco.iot.android.NetworkEx;
-import buzz.getcoco.iot.sample.Globals;
+import buzz.getcoco.iot.android.Identifier;
+import buzz.getcoco.iot.sample.utilities.Globals;
 import buzz.getcoco.iot.sample.adapters.NetworkListAdapter;
 import buzz.getcoco.iot.sample.databinding.ActivityCoconetworksBinding;
 import buzz.getcoco.iot.CocoClient;
-import buzz.getcoco.iot.android.Identifier;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CocoNetworksActivity extends AppCompatActivity {
@@ -29,9 +27,9 @@ public class CocoNetworksActivity extends AppCompatActivity {
 
     setContentView(binding.getRoot());
 
-    MutableLiveData<List<NetworkEx>> networkListObservable = new MutableLiveData<>();
+    MutableLiveData<List<Network>> networkListObservable = new MutableLiveData<>();
 
-    NetworkListAdapter adapter = new NetworkListAdapter(this, network -> {
+    NetworkListAdapter adapter = new NetworkListAdapter(network -> {
         network.connect();
 
         startActivity(new Intent(CocoNetworksActivity.this, MainActivity.class)
@@ -57,18 +55,8 @@ public class CocoNetworksActivity extends AppCompatActivity {
             }
 
             Log.d(TAG, "onCreate: networks: " + networkList);
-            List<NetworkEx> networkExes = new ArrayList<>();
 
-            for (Network network : networkList) {
-              if (!(network instanceof NetworkEx)) {
-                Log.e(TAG, "onCreate: illegal state");
-                continue;
-              }
-
-              networkExes.add((NetworkEx) network);
-            }
-
-            networkListObservable.postValue(networkExes);
+            networkListObservable.postValue(networkList);
           });
 
       binding.swipeToRefresh.setRefreshing(false);

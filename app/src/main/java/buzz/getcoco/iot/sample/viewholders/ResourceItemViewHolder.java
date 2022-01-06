@@ -38,35 +38,37 @@ public class ResourceItemViewHolder extends RecyclerView.ViewHolder {
 
           AttributeEx onOffAttr = resource.getAttribute(CapabilityOnOff.AttributeId.ON_FLAG);
           return (null == onOffAttr) ? new MutableLiveData<>(null) : onOffAttr.getCurrentValueObservable();
-        }).observe(lifecycleOwner, currentValue -> {
+        })
+        .observe(lifecycleOwner, currentValue -> {
 
-      if (currentValue instanceof Boolean) {
-        setControlValues(binding, (Boolean) currentValue);
-      }
+          if (currentValue instanceof Boolean) {
+            setControlValues(binding, (Boolean) currentValue);
+          }
 
-      int visibility = currentValue instanceof Boolean ? View.VISIBLE : View.GONE;
+          int visibility = currentValue instanceof Boolean ? View.VISIBLE : View.GONE;
 
-      binding.tvPowerDescription.setVisibility(visibility);
-      binding.tvPowerValue.setVisibility(visibility);
-      binding.btOnOff.setVisibility(visibility);
-    });
+          binding.tvPowerDescription.setVisibility(visibility);
+          binding.tvPowerValue.setVisibility(visibility);
+          binding.btOnOff.setVisibility(visibility);
+        });
 
     Transformations
         .switchMap(currentResourceObservable, resource -> {
 
           AttributeEx tempAttr = resource.getAttribute(CapabilityTemperatureSensing.AttributeId.CURRENT_TEMP_CELSIUS);
           return (null == tempAttr) ? new MutableLiveData<>(null) : tempAttr.getCurrentValueObservable();
-        }).observe(lifecycleOwner, currentValue -> {
+        })
+        .observe(lifecycleOwner, currentValue -> {
 
-      if (currentValue instanceof Number) {
-        setTemperatureValues(binding, (double) currentValue);
-      }
+          if (currentValue instanceof Number) {
+            setTemperatureValues(binding, (double) currentValue);
+          }
 
-      int visibility = currentValue instanceof Number ? View.VISIBLE : View.GONE;
+          int visibility = currentValue instanceof Number ? View.VISIBLE : View.GONE;
 
-      binding.tvTempDescription.setVisibility(visibility);
-      binding.tvTempValue.setVisibility(visibility);
-    });
+          binding.tvTempDescription.setVisibility(visibility);
+          binding.tvTempValue.setVisibility(visibility);
+        });
 
     binding.btOnOff.setOnClickListener(v -> {
       CapabilityOnOff capabilityOnOff = resource.getCapability(Capability.CapabilityId.ON_OFF_CONTROL);

@@ -33,7 +33,40 @@ public class ResourceItemViewHolder extends RecyclerView.ViewHolder {
         .switchMap(currentResourceObservable, ResourceEx::getNameObservable)
         .observe(lifecycleOwner, binding.tvResourceName::setText);
 
-    currentResourceObservable.observe(lifecycleOwner, resourceEx -> bind(resourceEx, binding, lifecycleOwner));
+    Transformations
+        .switchMap(currentResourceObservable, resource -> {
+
+          AttributeEx onOffAttr = resource.getAttribute(CapabilityOnOff.AttributeId.ON_FLAG);
+          return (null == onOffAttr) ? new MutableLiveData<>(null) : onOffAttr.getCurrentValueObservable();
+        }).observe(lifecycleOwner, currentValue -> {
+
+      if (currentValue instanceof Boolean) {
+        setControlValues(binding, (Boolean) currentValue);
+      }
+
+      int visibility = currentValue instanceof Boolean ? View.VISIBLE : View.GONE;
+
+      binding.tvPowerDescription.setVisibility(visibility);
+      binding.tvPowerValue.setVisibility(visibility);
+      binding.btOnOff.setVisibility(visibility);
+    });
+
+    Transformations
+        .switchMap(currentResourceObservable, resource -> {
+
+          AttributeEx tempAttr = resource.getAttribute(CapabilityTemperatureSensing.AttributeId.CURRENT_TEMP_CELSIUS);
+          return (null == tempAttr) ? new MutableLiveData<>(null) : tempAttr.getCurrentValueObservable();
+        }).observe(lifecycleOwner, currentValue -> {
+
+      if (currentValue instanceof Number) {
+        setTemperatureValues(binding, (double) currentValue);
+      }
+
+      int visibility = currentValue instanceof Number ? View.VISIBLE : View.GONE;
+
+      binding.tvTempDescription.setVisibility(visibility);
+      binding.tvTempValue.setVisibility(visibility);
+    });
 
     binding.btOnOff.setOnClickListener(v -> {
       CapabilityOnOff capabilityOnOff = resource.getCapability(Capability.CapabilityId.ON_OFF_CONTROL);
@@ -47,13 +80,7 @@ public class ResourceItemViewHolder extends RecyclerView.ViewHolder {
       capabilityOnOff.sendResourceCommand(command, (commandResponse, tr) -> {
         Log.d(TAG, "ResourceItemViewHolder: response: " + commandResponse, tr);
 
-        Handler handler = new Handler(Looper.getMainLooper());
-        if (null != tr) {
-          handler.post(() -> bind(resource, binding, lifecycleOwner));
-          return;
-        }
-
-        handler.post(() -> Toast
+        new Handler(Looper.getMainLooper()).post(() -> Toast
             .makeText(binding.getRoot().getContext(), (Command.State.SUCCESS == commandResponse.getState()) ? "Command Success" : "Command Failed", Toast.LENGTH_SHORT)
             .show());
       });
@@ -62,56 +89,6 @@ public class ResourceItemViewHolder extends RecyclerView.ViewHolder {
 
   public void setResource(ResourceEx resource) {
     currentResourceObservable.postValue(this.resource = resource);
-  }
-
-  private void bind(ResourceEx resource, RecyclerItemResourceBinding binding, LifecycleOwner owner) {
-    AttributeEx temperatureAttr, onOffAttr;
-
-    if (isControlResource(resource) &&
-        null != (onOffAttr = resource.getAttribute(CapabilityOnOff.AttributeId.ON_FLAG))) {
-
-      onOffAttr.getCurrentValueObservable().observe(owner, currentValue -> {
-        if (currentValue instanceof Boolean) {
-          setControlValues(binding, (Boolean) currentValue);
-        }
-
-        int visibility = currentValue instanceof Boolean ? View.VISIBLE : View.GONE;
-
-        binding.tvPowerDescription.setVisibility(visibility);
-        binding.tvPowerValue.setVisibility(visibility);
-        binding.btOnOff.setVisibility(visibility);
-      });
-    } else {
-      binding.tvPowerDescription.setVisibility(View.GONE);
-      binding.tvPowerValue.setVisibility(View.GONE);
-      binding.btOnOff.setVisibility(View.GONE);
-    }
-
-    if (isTemperatureResource(resource)
-        && (null != (temperatureAttr = resource.getAttribute(CapabilityTemperatureSensing.AttributeId.CURRENT_TEMP_CELSIUS)))) {
-
-      temperatureAttr.getCurrentValueObservable().observe(owner, currentValue -> {
-        if (currentValue instanceof Double) {
-          setTemperatureValues(binding, (Double) currentValue);
-        }
-
-        int visibility = currentValue instanceof Double ? View.VISIBLE : View.GONE;
-
-        binding.tvTempDescription.setVisibility(visibility);
-        binding.tvTempValue.setVisibility(visibility);
-      });
-    } else {
-      binding.tvTempDescription.setVisibility(View.GONE);
-      binding.tvTempValue.setVisibility(View.GONE);
-    }
-  }
-
-  private static boolean isControlResource(ResourceEx resource) {
-    return null != resource.getCapability(Capability.CapabilityId.ON_OFF_CONTROL);
-  }
-
-  private static boolean isTemperatureResource(ResourceEx resource) {
-    return null != resource.getCapability(Capability.CapabilityId.TEMPERATURE_MEASUREMENT);
   }
 
   private static void setTemperatureValues(RecyclerItemResourceBinding binding, Double temperature) {

@@ -5,11 +5,16 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
+
 import buzz.getcoco.iot.Capability;
 import buzz.getcoco.iot.CapabilityOnOff;
 import buzz.getcoco.iot.CapabilityTemperatureSensing;
@@ -33,16 +38,21 @@ public class ResourceItemViewHolder extends RecyclerView.ViewHolder {
         .switchMap(currentResourceObservable, ResourceEx::getNameObservable)
         .observe(lifecycleOwner, binding.tvResourceName::setText);
 
-    Transformations
-        .switchMap(currentResourceObservable, resource -> {
+    LiveData<List<AttributeEx>> attributeListObservable = Transformations.switchMap(currentResourceObservable, ResourceEx::getAttributeListObservable);
 
-          AttributeEx onOffAttr = resource.getAttribute(CapabilityOnOff.AttributeId.ON_FLAG);
+    Transformations
+        .switchMap(attributeListObservable, attrList -> {
+
+          AttributeEx onOffAttr = getAttribute(attrList, CapabilityOnOff.AttributeId.ON_FLAG);
           return (null == onOffAttr) ? new MutableLiveData<>(null) : onOffAttr.getCurrentValueObservable();
         })
         .observe(lifecycleOwner, currentValue -> {
 
           if (currentValue instanceof Boolean) {
-            setControlValues(binding, (Boolean) currentValue);
+            boolean onFlag = (boolean) currentValue;
+
+            binding.tvPowerValue.setText(onFlag ? R.string.on : R.string.off);
+            binding.btOnOff.setChecked(onFlag);
           }
 
           int visibility = currentValue instanceof Boolean ? View.VISIBLE : View.GONE;
@@ -53,15 +63,15 @@ public class ResourceItemViewHolder extends RecyclerView.ViewHolder {
         });
 
     Transformations
-        .switchMap(currentResourceObservable, resource -> {
+        .switchMap(attributeListObservable, attrList -> {
 
-          AttributeEx tempAttr = resource.getAttribute(CapabilityTemperatureSensing.AttributeId.CURRENT_TEMP_CELSIUS);
+          AttributeEx tempAttr = getAttribute(attrList, CapabilityTemperatureSensing.AttributeId.CURRENT_TEMP_CELSIUS);
           return (null == tempAttr) ? new MutableLiveData<>(null) : tempAttr.getCurrentValueObservable();
         })
         .observe(lifecycleOwner, currentValue -> {
 
           if (currentValue instanceof Number) {
-            setTemperatureValues(binding, (double) currentValue);
+            binding.tvTempValue.setText(binding.getRoot().getContext().getString(R.string.num_c, ((Number)currentValue).intValue()));
           }
 
           int visibility = currentValue instanceof Number ? View.VISIBLE : View.GONE;
@@ -93,14 +103,13 @@ public class ResourceItemViewHolder extends RecyclerView.ViewHolder {
     currentResourceObservable.postValue(this.resource = resource);
   }
 
-  private static void setTemperatureValues(RecyclerItemResourceBinding binding, Double temperature) {
-    binding.tvTempDescription.setText(R.string.temperature);
-    binding.tvTempValue.setText(binding.getRoot().getContext().getString(R.string.num_c, temperature.intValue()));
-  }
+  private static AttributeEx getAttribute(List<AttributeEx> attributes, Capability.AttributeId attributeId) {
 
-  private static void setControlValues(RecyclerItemResourceBinding binding, boolean onFlag) {
-    binding.tvPowerDescription.setText(R.string.power_supply);
-    binding.tvPowerValue.setText(onFlag ? R.string.on : R.string.off);
-    binding.btOnOff.setChecked(onFlag);
+    for (AttributeEx attribute: attributes) {
+      if (attribute.getId().equals(attributeId)) {
+        return attribute;
+      }
+    }
+    return null;
   }
 }

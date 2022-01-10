@@ -47,10 +47,10 @@
       android:layout_marginBottom="5dp"
       android:fontFamily="@font/quicksand_semi_bold"
       android:textSize="15sp"
+      android:text="@string/power_supply"
       app:layout_constraintBottom_toTopOf="@id/tvTempDescription"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="@id/dividerLine"
-      tools:text="@string/power_supply" />
+      app:layout_constraintTop_toTopOf="@id/dividerLine" />
 
     <TextView
       android:id="@+id/tvTempDescription"
@@ -61,10 +61,10 @@
       android:layout_marginBottom="5dp"
       android:fontFamily="@font/quicksand_semi_bold"
       android:textSize="15sp"
+      android:text="@string/temperature"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/tvPowerDescription"
-      tools:text="@string/temperature" />
+      app:layout_constraintTop_toBottomOf="@id/tvPowerDescription" />
 
     <androidx.constraintlayout.widget.Guideline
       android:id="@+id/glV60"

@@ -22,6 +22,7 @@ public class SplashActivity extends AppCompatActivity {
 
   private static final String TAG = "SplashActivity";
 
+  // querying tokens to CocoLoginActivity which starts a browser for login
   private final ActivityResultLauncher<Intent> resultLauncher =
       registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         Intent dataIntent = result.getData();
@@ -91,14 +92,12 @@ public class SplashActivity extends AppCompatActivity {
         .withPlatform(new PlatformInterface() {
           @Override
           public String getCwdPath() {
-            Log.d(TAG, "getCwdPath: using path: " + dir.getAbsolutePath());
-
             return dir.getAbsolutePath();
           }
 
           @Override
           public String getClientId() {
-            return "dc556e0901c164b7bf43";
+            return "your_client_id_here";
           }
 
           @Override

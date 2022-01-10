@@ -34,14 +34,12 @@
 
     <activity
       android:name="buzz.getcoco.auth.CocoRedirectActivity"
-      android:exported="true"
-      xmlns:tools="http://schemas.android.com/tools"
-      tools:node="replace">
+      android:exported="true">
       <intent-filter>
         <action android:name="android.intent.action.VIEW"/>
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
-        <data android:scheme="your_redirect_uri_here"/>
+        <data android:scheme="your_redirect_scheme_here"/>
       </intent-filter>
     </activity>
   </application>

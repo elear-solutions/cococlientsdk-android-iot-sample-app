@@ -43,8 +43,8 @@ dependencies {
   implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
 
   // IoT SDK android for COCO
-  implementation 'buzz.getcoco:cococlientsdk-android:0.8.0'
-  implementation 'buzz.getcoco:cococlientsdk-java:0.21.0-lite'
+  implementation 'buzz.getcoco:cococlientsdk-android:0.9.0'
+  implementation 'buzz.getcoco:cococlientsdk-java:0.22.0-lite'
 
   // login with COCO
   implementation 'com.github.elear-solutions:cocologinmgr-android:fa23708ad5'

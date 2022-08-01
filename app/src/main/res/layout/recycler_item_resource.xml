@@ -17,14 +17,15 @@
 
     <TextView
       android:id="@+id/tvResourceName"
-      android:layout_width="0dp"
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginTop="5dp"
+      android:paddingBottom="5dp"
       android:fontFamily="@font/quicksand_semi_bold"
       android:text="@string/resource_name"
       android:textAlignment="center"
       android:textColor="@color/color_heading"
       android:textSize="18sp"
+      app:layout_constraintBottom_toTopOf="@id/dividerLine"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent" />
@@ -43,13 +44,13 @@
       android:layout_height="wrap_content"
       android:layout_marginStart="10dp"
       android:layout_marginTop="5dp"
+      android:layout_marginBottom="5dp"
       android:fontFamily="@font/quicksand_semi_bold"
-      tools:text="@string/power_supply"
       android:textSize="15sp"
-      app:layout_constraintTop_toTopOf="@id/dividerLine"
+      android:text="@string/power_supply"
       app:layout_constraintBottom_toTopOf="@id/tvTempDescription"
       app:layout_constraintStart_toStartOf="parent"
-      />
+      app:layout_constraintTop_toTopOf="@id/dividerLine" />
 
     <TextView
       android:id="@+id/tvTempDescription"
@@ -59,46 +60,52 @@
       android:layout_marginTop="5dp"
       android:layout_marginBottom="5dp"
       android:fontFamily="@font/quicksand_semi_bold"
-      tools:text="@string/temperature"
       android:textSize="15sp"
+      android:text="@string/temperature"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/tvPowerDescription" />
 
     <androidx.constraintlayout.widget.Guideline
-      android:id="@+id/glV50"
+      android:id="@+id/glV60"
       android:layout_width="wrap_content"
       android:layout_height="match_parent"
       android:orientation="vertical"
-      app:layout_constraintGuide_percent="0.5" />
+      app:layout_constraintGuide_percent="0.6" />
 
-     <TextView
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/glV70"
+      android:layout_width="wrap_content"
+      android:layout_height="match_parent"
+      android:orientation="vertical"
+      app:layout_constraintGuide_percent="0.7" />
+
+    <TextView
       android:id="@+id/tvPowerValue"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:layout_marginEnd="10dp"
       android:layout_marginTop="5dp"
+      android:layout_marginEnd="10dp"
       android:fontFamily="@font/quicksand_semi_bold"
       android:textColor="@color/color19C676"
       android:textSize="15sp"
-      app:layout_constraintTop_toTopOf="@id/dividerLine"
-      app:layout_constraintEnd_toStartOf="@id/glV50"
       app:layout_constraintBottom_toTopOf="@id/tvTempValue"
-      tools:text="@string/off"
-      />
+      app:layout_constraintEnd_toStartOf="@id/glV60"
+      app:layout_constraintTop_toTopOf="@id/dividerLine"
+      tools:text="@string/off" />
 
     <TextView
       android:id="@+id/tvTempValue"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:layout_marginEnd="10dp"
       android:layout_marginTop="5dp"
+      android:layout_marginEnd="10dp"
       android:layout_marginBottom="5dp"
       android:fontFamily="@font/quicksand_semi_bold"
       android:textColor="@color/color19C676"
       android:textSize="15sp"
       app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toStartOf="@id/glV50"
+      app:layout_constraintEnd_toStartOf="@id/glV60"
       app:layout_constraintTop_toBottomOf="@id/tvPowerValue"
       tools:text="35 C" />
 
@@ -113,20 +120,9 @@
       android:checked="false"
       android:text="@null"
       android:visibility="invisible"
-      app:layout_constraintEnd_toStartOf="@id/ivBell"
-      app:layout_constraintStart_toEndOf="@id/glV50"
-      app:layout_constraintTop_toTopOf="@id/dividerLine"
-      app:layout_constraintBottom_toBottomOf="parent"/>
-
-    <ImageView
-      android:id="@+id/ivBell"
-      android:layout_width="30dp"
-      android:layout_height="30dp"
-      android:layout_marginEnd="10dp"
-      android:contentDescription="@string/alert"
-      android:src="@drawable/ic_alert"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/glV70"
       app:layout_constraintTop_toTopOf="@id/dividerLine" />
   </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>
